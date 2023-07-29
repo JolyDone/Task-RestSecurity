@@ -1,0 +1,26 @@
+package ru.itmentor.spring.boot_security.demo.modules;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Data
+@Entity
+@Table(name = "roles")
+public class Role  implements GrantedAuthority {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "role")
+    private String role;
+
+    @Override
+    public String getAuthority() {
+        return getRole();
+    }
+}
