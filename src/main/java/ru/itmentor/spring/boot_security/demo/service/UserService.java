@@ -1,7 +1,6 @@
 package ru.itmentor.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmentor.spring.boot_security.demo.DAO.RoleRepository;
@@ -38,17 +37,15 @@ public class UserService {
         userRepository.deleteById(uid);
     }
     public void edit(Long uid, User user){
-        Optional<User> updateUser = userRepository.findById(uid);
-        if(updateUser.isEmpty()){
-            throw new UsernameNotFoundException("No user");
-        } else {
-            userRepository.save(user);
-        }
+        userRepository.save(user);
     }
     public List<Role> findAllRoles(){
         return roleRepository.findAll();
     }
     public Optional<Role> findRoleByRoleName(String role){
         return roleRepository.findByRole(role);
+    }
+    public Optional<User> findUserByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }
