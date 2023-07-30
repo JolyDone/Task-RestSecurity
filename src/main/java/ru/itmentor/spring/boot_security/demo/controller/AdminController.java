@@ -24,7 +24,7 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public String listUsers(Model model){
         model.addAttribute("users", userService.findAllUsers());
         model.addAttribute("roles", userService.findAllRoles());
@@ -49,13 +49,13 @@ public class AdminController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userService.saveUser(user);
-        return "redirect:/admin/all";
+        return "redirect:/admin";
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id){
         userService.delete(id);
-        return "redirect:/admin/all";
+        return "redirect:/admin";
     }
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
@@ -78,6 +78,6 @@ public class AdminController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userService.edit(id, user);
-        return "redirect:/admin/all";
+        return "redirect:/admin";
     }
 }
