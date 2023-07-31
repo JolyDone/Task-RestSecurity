@@ -13,7 +13,7 @@
 
 <!-- Вывод ролей пользователя -->
 <p>Roles:
-    <span th:each="role, iterStat : ${user.roles}">
+    <span th:each="role, iterStat : ${roles}">
             <span th:text="${role.role}"></span>
             <span th:if="${!iterStat.last}">, </span> <!-- Добавляем запятую после каждой роли, кроме последней -->
         </span>

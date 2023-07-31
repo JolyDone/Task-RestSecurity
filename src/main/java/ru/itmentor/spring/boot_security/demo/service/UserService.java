@@ -8,6 +8,8 @@ import ru.itmentor.spring.boot_security.demo.dao.UserRepository;
 import ru.itmentor.spring.boot_security.demo.model.Role;
 import ru.itmentor.spring.boot_security.demo.model.User;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +49,10 @@ public class UserService {
     }
     public Optional<User> findUserByEmail(String email){
         return userRepository.findByEmail(email);
+    }
+    @Transactional(readOnly = true)
+    public Collection<Role> getUserRoles(Long uid) {
+        Optional<User> userOptional = userRepository.findById(uid);
+        return userOptional.map(User::getRoles).orElse(Collections.emptyList());
     }
 }
