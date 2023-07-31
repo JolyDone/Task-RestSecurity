@@ -3,10 +3,10 @@ package ru.itmentor.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmentor.spring.boot_security.demo.DAO.RoleRepository;
-import ru.itmentor.spring.boot_security.demo.DAO.UserRepository;
-import ru.itmentor.spring.boot_security.demo.modules.Role;
-import ru.itmentor.spring.boot_security.demo.modules.User;
+import ru.itmentor.spring.boot_security.demo.dao.RoleRepository;
+import ru.itmentor.spring.boot_security.demo.dao.UserRepository;
+import ru.itmentor.spring.boot_security.demo.model.Role;
+import ru.itmentor.spring.boot_security.demo.model.User;
 
 import java.util.List;
 import java.util.Optional;

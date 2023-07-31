@@ -1,11 +1,9 @@
-package ru.itmentor.spring.boot_security.demo.modules;
+package ru.itmentor.spring.boot_security.demo.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity

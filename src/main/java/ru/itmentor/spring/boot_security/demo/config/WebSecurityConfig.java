@@ -1,4 +1,4 @@
-package ru.itmentor.spring.boot_security.demo.configs;
+package ru.itmentor.spring.boot_security.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
