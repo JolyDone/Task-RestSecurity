@@ -75,16 +75,19 @@ public class AdminController {
     }
 
     @PostMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long id,
-                         @RequestParam("role")  String[] roleNames, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/edit"; // Возвращаем форму с ошибками валидации
-        }
+    public String update(@ModelAttribute("user") @Valid User user,BindingResult bindingResult,
+                         @PathVariable("id") Long id, @RequestParam(value = "role", defaultValue = "ROLE_USER")  String[] roleNames, Model model) {
+
         Set<Role> rolesSet = Arrays.stream(roleNames)
                 .map(roleName -> userServiceImp.findRoleByRoleName(roleName))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("allRoles", userServiceImp.findAllRoles());
+            return "/edit";
+        }
 
         user.setRoles(rolesSet);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
