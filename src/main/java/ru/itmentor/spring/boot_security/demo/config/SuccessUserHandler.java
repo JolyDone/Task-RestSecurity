@@ -1,5 +1,6 @@
 package ru.itmentor.spring.boot_security.demo.config;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @Component
+@Primary
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
     // Spring Security использует объект Authentication, пользователя авторизованной сессии.
     @Override

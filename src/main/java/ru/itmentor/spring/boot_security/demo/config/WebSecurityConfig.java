@@ -21,12 +21,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, @Qualifier("userDetailsServiceImp") UserDetailsService userDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, @Qualifier("userServiceImp") UserDetailsService userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
     }
 
-    public WebSecurityConfig(boolean disableDefaults, SuccessUserHandler successUserHandler, @Qualifier("userDetailsServiceImp") UserDetailsService userDetailsService) {
+    public WebSecurityConfig(boolean disableDefaults, SuccessUserHandler successUserHandler, @Qualifier("userServiceImp") UserDetailsService userDetailsService) {
         super(disableDefaults);
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
