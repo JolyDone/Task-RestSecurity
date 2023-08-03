@@ -5,6 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -19,15 +24,20 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "name")
+    @Size(min = 3, max = 64, message = "Not correct name")
     private String name;
 
     @Column(name = "last_name")
+    @Size(min = 3, max = 64, message = "Not correct last name")
     private String lastname;
 
     @Column(name = "email")
+    @Email(message = "Not correct email")
     private String email;
 
     @Column(name = "password")
+    @NotEmpty(message = "Password could not be empty or have ' '")
+    @Size(min = 3, max = 64, message = "Not correct password")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

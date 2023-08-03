@@ -69,6 +69,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Optional<User> userOptional = userRepository.findById(uid);
         return userOptional.map(User::getRoles).orElse(Collections.emptyList());
     }
+
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

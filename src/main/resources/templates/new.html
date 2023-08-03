@@ -9,17 +9,23 @@
 <form th:action="@{/admin/new}" th:object="${user}" method="post">
     <label for="name">Name:</label>
     <input type="text" id="name" th:field="*{name}" required><br>
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;">Name Error</div><br>
+
 
     <label for="lastname">Last Name:</label>
     <input type="text" id="lastname" th:field="*{lastname}" required><br>
+    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" style="color: red;">LastName Error</div><br>
+
 
     <label for="email">Email:</label>
     <input type="email" id="email" th:field="*{email}" required><br>
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;">Email Error</div><br>
+
 
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required><br><br>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;">Password Error</div><br>
 
-    <!-- Add more input fields for other user properties if needed -->
     <label>Roles:</label><br>
     <select multiple="multiple" name="role">
         <option th:each="role : ${allRoles}" th:value="${role.role}" th:text="${role.role}"></option>
