@@ -14,11 +14,11 @@ import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
     private UserServiceImp userServiceImp;
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     public AdminController(UserServiceImp userServiceImp, PasswordEncoder passwordEncoder) {
         this.userServiceImp = userServiceImp;
@@ -26,57 +26,42 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String listUsers(Model model){
-        model.addAttribute("users", userServiceImp.findAllUsers());
-        model.addAttribute("roles", userServiceImp.findAllRoles());
-        return "admin";
+    public List<User> listUsers(){
+        return userServiceImp.findAllUsers();
     }
 
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("allRoles", userServiceImp.findAllRoles());
-        return "/new";
-    }
     @PostMapping("/new")
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         @RequestParam(value = "role", defaultValue = "ROLE_USER") String[] roleNames, Model model){
+    public User create(@ModelAttribute("user") @Valid User user,
+                         BindingResult bindingResult,
+                         @RequestParam(value = "role", defaultValue = "ROLE_USER") String[] roleNames){
+        if(bindingResult.hasErrors())
+        {
+            System.out.println(user + " Has Error");
+            return null;
+        }
 
         Set<Role> rolesSet = Arrays.stream(roleNames)
                 .map(roleName -> userServiceImp.findRoleByRoleName(roleName))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("allRoles", userServiceImp.findAllRoles());
-            return "/new";
-        }
 
         user.setRoles(rolesSet);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userServiceImp.saveUser(user);
-        return "redirect:/admin";
+        System.out.println(user);
+        return user;
     }
 
-    @PostMapping("/{id}/delete")
-    public String delete(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}/delete")
+    public void delete(@PathVariable("id") Long id){
         userServiceImp.delete(id);
-        return "redirect:/admin";
-    }
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        Optional<User> user = userServiceImp.findUser(id);
-
-        model.addAttribute("user", user.get());
-        model.addAttribute("allRoles", userServiceImp.findAllRoles());
-        return "/edit";
     }
 
-    @PostMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,BindingResult bindingResult,
-                         @PathVariable("id") Long id, @RequestParam(value = "role", defaultValue = "ROLE_USER")  String[] roleNames, Model model) {
+    @PutMapping("/{id}")
+    public User update(@ModelAttribute("user") @Valid User user,
+                         @PathVariable("id") Long id, @RequestParam(value = "role", defaultValue = "ROLE_USER")  String[] roleNames) {
 
         Set<Role> rolesSet = Arrays.stream(roleNames)
                 .map(roleName -> userServiceImp.findRoleByRoleName(roleName))
@@ -84,15 +69,11 @@ public class AdminController {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("allRoles", userServiceImp.findAllRoles());
-            return "/edit";
-        }
 
         user.setRoles(rolesSet);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         userServiceImp.edit(id, user);
-        return "redirect:/admin";
+
+        return user;
     }
 }

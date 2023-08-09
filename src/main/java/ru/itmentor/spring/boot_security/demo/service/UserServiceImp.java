@@ -18,8 +18,8 @@ import java.util.Optional;
 
 @Service("userServiceImp")
 public class UserServiceImp implements UserService, UserDetailsService {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImp(UserRepository userRepository, RoleRepository roleRepository) {
@@ -37,14 +37,17 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userRepository.findById(uid);
     }
     @Override
+    @Transactional
     public void saveUser(User user){
         userRepository.save(user);
     }
     @Override
+    @Transactional
     public void delete(Long uid){
         userRepository.deleteById(uid);
     }
     @Override
+    @Transactional
     public void edit(Long uid, User user){
         userRepository.save(user);
     }
@@ -69,8 +72,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         Optional<User> userOptional = userRepository.findById(uid);
         return userOptional.map(User::getRoles).orElse(Collections.emptyList());
     }
-
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

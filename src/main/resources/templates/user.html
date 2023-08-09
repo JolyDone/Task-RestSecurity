@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>User Information</title>
-</head>
-<body>
-<h1>User Information</h1>
-<p>Id: <span th:text="${user.id}"></span></p>
-<p>Name: <span th:text="${user.name}"></span></p>
-<p>Last Name: <span th:text="${user.lastname}"></span></p>
-<p>Email: <span th:text="${user.email}"></span></p>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>User Info</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>User Info</h1>-->
+<!--<div id="userInfo"></div>-->
 
-<!-- Вывод ролей пользователя -->
-<p>Roles:
-    <span th:each="role, iterStat : ${roles}">
-            <span th:text="${role.role}"></span>
-            <span th:if="${!iterStat.last}">, </span> <!-- Добавляем запятую после каждой роли, кроме последней -->
-        </span>
-</p>
-<a th:href="@{/logout}">Logout</a>
-</body>
-</html>
+<!--<script>-->
+<!--    fetch("/user")-->
+<!--        .then(response => response.json())-->
+<!--        .then(user => {-->
+<!--            const userInfo = document.getElementById("userInfo");-->
+<!--            if (user) {-->
+<!--                userInfo.innerHTML = `-->
+<!--                        <p>Name: ${user.name}</p>-->
+<!--                                               `;-->
+<!--            } else {-->
+<!--                userInfo.textContent = "User not found.";-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => console.error("Error fetching user info:", error));-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
