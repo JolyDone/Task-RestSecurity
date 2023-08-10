@@ -1,6 +1,8 @@
 package ru.itmentor.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +33,16 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public User create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult,
-                         @RequestParam(value = "role", defaultValue = "ROLE_USER") String[] roleNames){
+    public ResponseEntity<?> create(@Valid User user,
+                                 BindingResult bindingResult,
+                                 @RequestParam(value = "role", defaultValue = "ROLE_USER") String[] roleNames){
         if(bindingResult.hasErrors())
         {
             System.out.println(user + " Has Error");
-            return null;
+            return new ResponseEntity<>(bindingResult.getFieldError(), HttpStatus.BAD_REQUEST);
+        }
+        if(userServiceImp.findUserByEmail(user.getEmail()).isPresent()){
+            return new ResponseEntity<>("User exist", HttpStatus.BAD_REQUEST);
         }
 
         Set<Role> rolesSet = Arrays.stream(roleNames)
@@ -50,8 +55,8 @@ public class AdminController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userServiceImp.saveUser(user);
-        System.out.println(user);
-        return user;
+        System.out.println(user + " :Was created");
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}/delete")
@@ -60,8 +65,15 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public User update(@ModelAttribute("user") @Valid User user,
+    public ResponseEntity<?> update(@Valid User user,
+                         BindingResult bindingResult,
                          @PathVariable("id") Long id, @RequestParam(value = "role", defaultValue = "ROLE_USER")  String[] roleNames) {
+        if(bindingResult.hasErrors())
+        {
+            System.out.println(user + " Has Error in update");
+            return new ResponseEntity<>(bindingResult.getFieldError(), HttpStatus.BAD_REQUEST);
+        }
+
 
         Set<Role> rolesSet = Arrays.stream(roleNames)
                 .map(roleName -> userServiceImp.findRoleByRoleName(roleName))
@@ -74,6 +86,6 @@ public class AdminController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userServiceImp.edit(id, user);
 
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
